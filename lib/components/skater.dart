@@ -42,7 +42,7 @@ class Skater extends SpriteGroupComponent<SkaterState> with HasGameRef<JumpySkat
   void update(double dt) {
     super.update(dt);
     if (position.y < gameRef.size.y - Config.groundHeight - size.y) {
-      position.y += Config.birdVelocity * dt;
+      position.y += Config.gravity * dt;
     }
   }
 
@@ -50,13 +50,15 @@ class Skater extends SpriteGroupComponent<SkaterState> with HasGameRef<JumpySkat
     if (isJumping) {
       return;
     }
+
+    gameRef.gameSpeed *= Config.gameSpeedUpdateFactor;
     FlameAudio.bgm.stop();
     FlameAudio.play(Assets.ollie);
     isJumping = true;
     current = SkaterState.jumpingUp;
     add(
       MoveByEffect(
-        Vector2(0, Config.gravity),
+        Vector2(0, Config.jumpVelocity),
         EffectController(duration: 0.2, curve: Curves.decelerate),
         onComplete: () {
           current = SkaterState.fallingDown;
@@ -74,6 +76,7 @@ class Skater extends SpriteGroupComponent<SkaterState> with HasGameRef<JumpySkat
     } else if (other is Ground) {
       current = SkaterState.onTheGround;
       isJumping = false;
+
       FlameAudio.bgm.resume();
     }
   }

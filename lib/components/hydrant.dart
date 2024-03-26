@@ -13,10 +13,10 @@ class Hydrant extends SpriteComponent with HasGameRef<JumpySkaterGame> {
 
   @override
   Future<void> onLoad() async {
-    final pipe = await Flame.images.load(Assets.hydrant);
+    final hydrant = await Flame.images.load(Assets.hydrant);
 
-    sprite = Sprite(pipe);
-    size = Vector2(50, 100);
+    sprite = Sprite(hydrant);
+    size = Vector2(50, 110);
     position.y = gameRef.size.y - size.y - Config.groundHeight;
     position.x = gameRef.size.x;
 
@@ -35,7 +35,7 @@ class Hydrant extends SpriteComponent with HasGameRef<JumpySkaterGame> {
   }
 
   void updateScore() {
-    gameRef.skater.score += 1;
+    gameRef.skater.score++;
     final sound = Random().nextBool() ? Assets.yeah : Assets.wow;
     FlameAudio.play(sound, volume: 0.5);
   }

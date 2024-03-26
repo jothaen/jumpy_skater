@@ -32,7 +32,6 @@ class JumpySkaterGame extends FlameGame with TapDetector, HasCollisionDetection 
   @override
   void onTap() {
     skater.jump();
-    gameSpeed += Config.gameSpeedUpdateValue;
   }
 
   @override
