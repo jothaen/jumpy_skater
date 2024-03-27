@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:jumpy_skater/components/background.dart';
 import 'package:jumpy_skater/components/ground.dart';
 import 'package:jumpy_skater/components/hydrant.dart';
+import 'package:jumpy_skater/components/money.dart';
 import 'package:jumpy_skater/components/skater.dart';
 import 'package:jumpy_skater/game/config.dart';
 
@@ -12,9 +13,11 @@ class JumpySkaterGame extends FlameGame with TapDetector, HasCollisionDetection 
   JumpySkaterGame();
 
   late Skater skater;
-  Timer interval = Timer(Config.hydrantInterval, repeat: true);
+  Timer hydrantInterval = Timer(Config.hydrantInterval, repeat: true);
+  Timer moneyInterval = Timer(Config.moneyInterval, repeat: true);
   double gameSpeed = Config.initialGameSpeed;
   late TextComponent score;
+
   @override
   Future<void> onLoad() async {
     _init();
@@ -37,7 +40,8 @@ class JumpySkaterGame extends FlameGame with TapDetector, HasCollisionDetection 
   @override
   void update(double dt) {
     super.update(dt);
-    interval.update(dt);
+    hydrantInterval.update(dt);
+    moneyInterval.update(dt);
     score.text = 'Score: ${skater.score}';
   }
 
@@ -49,6 +53,7 @@ class JumpySkaterGame extends FlameGame with TapDetector, HasCollisionDetection 
       score = buildScore(),
     ]);
 
-    interval.onTick = () => add(Hydrant());
+    hydrantInterval.onTick = () => add(Hydrant());
+    moneyInterval.onTick = () => add(Money());
   }
 }

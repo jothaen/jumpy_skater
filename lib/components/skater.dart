@@ -5,6 +5,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:jumpy_skater/components/ground.dart';
 import 'package:jumpy_skater/components/hydrant.dart';
+import 'package:jumpy_skater/components/money.dart';
 import 'package:jumpy_skater/game/assets.dart';
 import 'package:jumpy_skater/game/config.dart';
 import 'package:jumpy_skater/game/jumpy_skater_game.dart';
@@ -76,8 +77,11 @@ class Skater extends SpriteGroupComponent<SkaterState> with HasGameRef<JumpySkat
     } else if (other is Ground) {
       current = SkaterState.onTheGround;
       isJumping = false;
-
       FlameAudio.bgm.resume();
+    } else if (other is Money) {
+      gameRef.skater.score++;
+      other.removeFromParent();
+      FlameAudio.play(Assets.cashSound);
     }
   }
 
